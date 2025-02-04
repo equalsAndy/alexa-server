@@ -20,8 +20,8 @@ const options = {
 };
 
 // Use HTTPS
-https.createServer(options, app).listen(443, () => {
-  console.log("Server running on HTTPS port 443");
+https.createServer(options, app).listen(8443, () => {
+  console.log("Server running on HTTPS port 8443");
 });
 
 app.use("/oauth", oauthRoutes);
