@@ -22,6 +22,35 @@ router.get("/authorize", (req, res) => {
   `);
 });
 
+router.post("/token", (req, res) => {
+    const { grant_type, code, client_id, client_secret } = req.body;
+  
+    // Verify client credentials
+    if (client_id !== process.env.OAUTH_CLIENT_ID || client_secret !== process.env.OAUTH_CLIENT_SECRET) {
+      return res.status(401).json({ error: "Invalid client credentials" });
+    }
+  
+    // Only support authorization_code for now
+    if (grant_type !== "authorization_code") {
+      return res.status(400).json({ error: "Unsupported grant type" });
+    }
+  
+    // Check if the auth code is valid
+    if (code !== "AUTH_CODE_123") {
+      return res.status(400).json({ error: "Invalid authorization code" });
+    }
+  
+    // Generate a fake access token
+    const accessToken = "FAKE_ACCESS_TOKEN_456";
+    const expiresIn = 3600; // 1 hour expiration
+  
+    res.json({
+      access_token: accessToken,
+      token_type: "bearer",
+      expires_in: expiresIn
+    });
+  });
+
 // Handle login
 router.post("/authorize", (req, res) => {
     const { username, password, client_id, redirect_uri } = req.body;
